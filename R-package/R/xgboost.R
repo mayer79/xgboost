@@ -102,6 +102,7 @@ NULL
 #' @importFrom graphics par
 #' @importFrom graphics title
 #' @importFrom grDevices rgb
+#' @importFrom splitTools create_folds
 #'
 #' @import methods
 #' @useDynLib xgboost, .registration = TRUE

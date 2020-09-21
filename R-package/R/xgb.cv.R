@@ -156,9 +156,27 @@ xgb.cv <- function(params=list(), data, nrounds, nfold, label = NULL, missing = 
       stop("'folds' must be a list with 2 or more elements that are vectors of indices for each CV-fold")
     nfold <- length(folds)
   } else {
-    if (nfold <= 1)
+    if (nfold <= 1) {
       stop("'nfold' must be > 1")
-    folds <- generate.cv.folds(nfold, nrow(data), stratified, cv_label, params)
+    }
+    
+    # Helper function
+    obj_starts_with(start = "") {
+      is.character(params$objective) && startsWith(params$objective, start)
+    }
+    
+    # Cannot do it for rank
+    if (obj_starts_with('rank:')) {
+      stop("\n\tAutomatic generation of CV-folds is not implemented for ranking!\n",
+           "\tConsider providing pre-computed CV-folds through the 'folds=' parameter.\n")
+    }
+    folds <- create_folds(
+      y = cv_label, 
+      k = nfold, 
+      type = if (stratified) "stratified" else "basic", 
+      n_bins = if (obj_starts_with('multi:')) params$num_class + 1L else 5,
+      use_names = FALSE
+    )
   }
 
   # Potential TODO: sequential CV

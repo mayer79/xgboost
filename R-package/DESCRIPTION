@@ -63,5 +63,6 @@ Imports:
     methods,
     data.table (>= 1.9.6),
     magrittr (>= 1.5),
+    splitTools (>= 0.3.0),
 RoxygenNote: 7.1.1
 SystemRequirements: GNU make, C++14
